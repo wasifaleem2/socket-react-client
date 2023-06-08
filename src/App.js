@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
 
+// import io from socket.io-client for client connection
 import { io } from "socket.io-client";
 
 function App() {
