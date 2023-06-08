@@ -34,3 +34,9 @@
   padding-left: 10px;
   text-align: left;
 }
+
+.msg-date{
+  font-size: 10px;
+  text-align: end;
+  color: rgb(148, 148, 148);
+}

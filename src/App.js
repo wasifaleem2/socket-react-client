@@ -22,7 +22,10 @@ function App() {
   }, []);
 
   const send = () => {
-    socket.current.emit("message", message);
+    let date = new Date().toLocaleDateString();
+    let time = new Date().toLocaleTimeString();
+    console.log(date, time);
+    socket.current.emit("message", {message, date, time});
     setMessage("")
   };
 
@@ -37,7 +40,8 @@ function App() {
 
           {chat.map((msg, index) => (
             <div className="receive" key={index}>
-              <p key={index}>{msg}</p>
+              <p>{msg.message}</p>
+              <p className="msg-date">{msg.date} {msg.time}</p>
             </div>
           ))}
       </div>
