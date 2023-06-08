@@ -5,7 +5,30 @@
 
 .chat-box {
   width: 300px;
-  height: 500px;
+  min-height: 500px;
+  height: auto;
   text-align: center;
   background-color: floralwhite;
+}
+.chat-box input{
+  width: 70%;
+  margin: 1%;
+}
+.chat-box button{
+  width: 20%;
+  margin: 1%;
+  background-color: yellowgreen;
+  border-color: white;
+  color: white;
+}
+.chat-box h3{
+  color: red;
+}
+.receive{
+  min-height: 25px;
+  width: 150px;
+  max-width: 190px;
+  background-color: rgb(235, 198, 125);
+  color: white;
+  margin-left: 10px;
 }

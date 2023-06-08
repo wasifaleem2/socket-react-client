@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
 
+// import io from socket.io-client for client connection
 import { io } from "socket.io-client";
 
 function App() {
   const socket = useRef();
   const [message, setMessage] = useState("");
-  const [chat, setChat] = useState([]); // Use state hook to manage chat messages
+  const [chat, setChat] = useState([]);
 
   useEffect(() => {
     socket.current = io("http://localhost:5000");
@@ -28,17 +29,17 @@ function App() {
   return (
     <div className="App">
       <div className="chat-box">
-        <p>Socket.io app</p>
-        <input placeholder="..." value={message} onChange={(e) => setMessage(e.target.value)} />
+        <h3>Socket.io chat</h3>
+        <input placeholder="type..." value={message} onChange={(e) => setMessage(e.target.value)} />
         <button type="button" onClick={send}>
           Send
         </button>
 
-        <div>
           {chat.map((msg, index) => (
-            <p key={index}>{msg}</p>
+            <div className="receive">
+              <p key={index}>{msg}</p>
+            </div>
           ))}
-        </div>
       </div>
     </div>
   );
