@@ -36,7 +36,7 @@ function App() {
         </button>
 
           {chat.map((msg, index) => (
-            <div className="receive">
+            <div className="receive" key={index}>
               <p key={index}>{msg}</p>
             </div>
           ))}

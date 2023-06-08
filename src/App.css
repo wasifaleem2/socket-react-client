@@ -31,4 +31,6 @@
   background-color: rgb(235, 198, 125);
   color: white;
   margin-left: 10px;
+  padding-left: 10px;
+  text-align: left;
 }
