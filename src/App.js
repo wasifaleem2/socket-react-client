@@ -8,14 +8,29 @@ function App() {
   const socket = useRef();
   const [message, setMessage] = useState("");
   const [chat, setChat] = useState([]);
+  const [usersList, setUserList] = useState([]);
+  const [recipient, setRecipient] = useState("");
 
   useEffect(() => {
     socket.current = io("http://localhost:5000");
 
+    // for socket connention with server
     socket.current.on("connection", () => {
       console.log("connected to server");
     });
+    
+    // getting my id from socket
+    socket.current.on("socket_id", (id)=>{
+      console.log("user id", id)
+    })
 
+    // getting ids of all the conected clients
+    socket.current.on("connected_users", (data)=>{
+      console.log("connected Users", data.connectedUsers)
+      setUserList(data.connectedUsers)
+    })
+
+    // sending message to client through server
     socket.current.on("message", (msg) => {
       setChat((prevChat) => [...prevChat, msg]);
     });
@@ -25,7 +40,7 @@ function App() {
     let date = new Date().toLocaleDateString();
     let time = new Date().toLocaleTimeString();
     console.log(date, time);
-    socket.current.emit("message", {message, date, time});
+    socket.current.emit("message", {message, date, time, recipient});
     setMessage("")
   };
 
@@ -33,6 +48,12 @@ function App() {
     <div className="App">
       <div className="chat-box">
         <h3>Socket.io chat</h3>
+        <label>USER </label>
+        <select name="cars" id="cars" onChange={(e)=>{setRecipient(e.target.value)}}>
+          {usersList.map((option, index) => (
+            <option key={option} value={option}>{option}</option>
+          ))}
+        </select>
         <input placeholder="type..." value={message} onChange={(e) => setMessage(e.target.value)} />
         <button type="button" onClick={send}>
           Send
