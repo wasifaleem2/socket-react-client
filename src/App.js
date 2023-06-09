@@ -10,6 +10,7 @@ function App() {
   const [chat, setChat] = useState([]);
   const [usersList, setUserList] = useState([]);
   const [recipient, setRecipient] = useState("");
+  const [sender, setSender] = useState("")
 
   useEffect(() => {
     socket.current = io("http://localhost:5000");
@@ -22,6 +23,7 @@ function App() {
     // getting my id from socket
     socket.current.on("socket_id", (id)=>{
       console.log("user id", id)
+      setSender(id);
     })
 
     // getting ids of all the conected clients
@@ -40,7 +42,7 @@ function App() {
     let date = new Date().toLocaleDateString();
     let time = new Date().toLocaleTimeString();
     console.log(date, time);
-    socket.current.emit("message", {message, date, time, recipient});
+    socket.current.emit("message", {message, date, time, recipient, sender});
     setMessage("")
   };
 
@@ -61,6 +63,7 @@ function App() {
 
           {chat.map((msg, index) => (
             <div className="receive" key={index}>
+              <p>{msg.sender}</p>
               <p>{msg.message}</p>
               <p className="msg-date">{msg.date} {msg.time}</p>
             </div>
