@@ -50,8 +50,8 @@ function App() {
     <div className="App">
       <div className="chat-box">
         <h3>Socket.io chat</h3>
-        <label>USER </label>
-        <select name="cars" id="cars" onChange={(e)=>{setRecipient(e.target.value)}}>
+        <label className="select-label">RECIPIENT </label>
+        <select className="select" name="cars" id="cars" onChange={(e)=>{setRecipient(e.target.value)}}>
           {usersList.map((option, index) => (
             <option key={option} value={option}>{option}</option>
           ))}
@@ -63,8 +63,8 @@ function App() {
 
           {chat.map((msg, index) => (
             <div className="receive" key={index}>
-              <p>{msg.sender}</p>
-              <p>{msg.message}</p>
+              <p className="msg-sender">from: {msg.sender}</p>
+              <p className="msg-message">{msg.message}</p>
               <p className="msg-date">{msg.date} {msg.time}</p>
             </div>
           ))}
