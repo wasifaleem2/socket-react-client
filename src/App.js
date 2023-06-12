@@ -1,16 +1,39 @@
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
-
+import axios from "axios"
 // import io from socket.io-client for client connection
 import { io } from "socket.io-client";
 
 function App() {
   const socket = useRef();
   const [message, setMessage] = useState("");
+  const [messages, setMessages] = useState([]);
   const [chat, setChat] = useState([]);
   const [usersList, setUserList] = useState([]);
   const [recipient, setRecipient] = useState("");
   const [sender, setSender] = useState("")
+
+  let senderPhone = 333;
+  let URL = "http://localhost:3002/api/message/get"
+  const getALLMessages = () => {
+    axios.get(URL, {
+      headers: {
+        'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjEyMyIsInBhc3N3b3JkIjoiMTIzNDUiLCJpYXQiOjE2ODY1NTg4MDYsImV4cCI6MTY4NjY0NTIwNn0.xHb6_qtObZ6eLZqk7qyDHVdx5rq0s6-TGwbhc7XuJNE`,
+        'Content-Type': 'application/json'
+      }
+    }).then((response) => {
+      try {
+        setMessages(response.data);
+        console.log("api response",response.data)
+      } catch (error) {
+        console.log(error);
+      }
+    });
+  }
+  useEffect(() => {
+    getALLMessages();
+  },[])
+
 
   useEffect(() => {
     socket.current = io("http://localhost:5000");
@@ -61,8 +84,15 @@ function App() {
           Send
         </button>
 
+          {messages.map((msg, index) => (
+            <div className={senderPhone == msg.senderNumber ? "send message_container" : "receive message_container"} key={index}>
+              <p className="msg-sender">{sender == msg.sender? "you" : `from: ${msg.senderNumber}`}</p>
+              <p className="msg-message">{msg.text}</p>
+              <p className="msg-date">{msg.date} {msg.time}</p>
+            </div>
+          ))}
           {chat.map((msg, index) => (
-            <div className={sender == msg.sender ? "send" : "receive"} key={index}>
+            <div className={`message_container ${sender === msg.sender ? "send message_container" : "receive message_container"}`} key={index}>
               <p className="msg-sender">{sender == msg.sender? "you" : `from: ${msg.sender}`}</p>
               <p className="msg-message">{msg.message}</p>
               <p className="msg-date">{msg.date} {msg.time}</p>
