@@ -62,8 +62,8 @@ function App() {
         </button>
 
           {chat.map((msg, index) => (
-            <div className="receive" key={index}>
-              <p className="msg-sender">from: {msg.sender}</p>
+            <div className={sender == msg.sender ? "send" : "receive"} key={index}>
+              <p className="msg-sender">{sender == msg.sender? "you" : `from: ${msg.sender}`}</p>
               <p className="msg-message">{msg.message}</p>
               <p className="msg-date">{msg.date} {msg.time}</p>
             </div>
