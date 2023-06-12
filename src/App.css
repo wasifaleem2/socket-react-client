@@ -3,6 +3,12 @@
   justify-content: center;
 }
 
+.select-label{
+  color: red;
+}
+.select{
+  color: red;
+}
 .chat-box {
   width: 300px;
   min-height: 500px;
@@ -26,17 +32,37 @@
 }
 .receive{
   min-height: 25px;
-  width: 150px;
+  width: 160px;
   max-width: 190px;
   background-color: rgb(235, 198, 125);
   color: white;
   margin-left: 10px;
   padding-left: 10px;
   text-align: left;
+  float: left;
+}
+.send{
+  min-height: 25px;
+  width: 160px;
+  max-width: 190px;
+  background-color: rgb(255, 176, 210);
+  color: white;
+  margin-right: 10px;
+  padding-left: 10px;
+  text-align: left;
+  float: right;
 }
 
+.msg-sender{
+  font-size: 9px;
+  color: rgb(148, 148, 148);
+}
+.msg-message{
+  font-size: 15px;
+  color: white;
+}
 .msg-date{
-  font-size: 10px;
+  font-size: 9px;
   text-align: end;
   color: rgb(148, 148, 148);
 }

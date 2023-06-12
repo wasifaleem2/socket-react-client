@@ -10,6 +10,7 @@ function App() {
   const [chat, setChat] = useState([]);
   const [usersList, setUserList] = useState([]);
   const [recipient, setRecipient] = useState("");
+  const [sender, setSender] = useState("")
 
   useEffect(() => {
     socket.current = io("http://localhost:5000");
@@ -22,6 +23,7 @@ function App() {
     // getting my id from socket
     socket.current.on("socket_id", (id)=>{
       console.log("user id", id)
+      setSender(id);
     })
 
     // getting ids of all the conected clients
@@ -40,7 +42,7 @@ function App() {
     let date = new Date().toLocaleDateString();
     let time = new Date().toLocaleTimeString();
     console.log(date, time);
-    socket.current.emit("message", {message, date, time, recipient});
+    socket.current.emit("message", {message, date, time, recipient, sender});
     setMessage("")
   };
 
@@ -48,8 +50,8 @@ function App() {
     <div className="App">
       <div className="chat-box">
         <h3>Socket.io chat</h3>
-        <label>USER </label>
-        <select name="cars" id="cars" onChange={(e)=>{setRecipient(e.target.value)}}>
+        <label className="select-label">RECIPIENT </label>
+        <select className="select" name="cars" id="cars" onChange={(e)=>{setRecipient(e.target.value)}}>
           {usersList.map((option, index) => (
             <option key={option} value={option}>{option}</option>
           ))}
@@ -60,8 +62,9 @@ function App() {
         </button>
 
           {chat.map((msg, index) => (
-            <div className="receive" key={index}>
-              <p>{msg.message}</p>
+            <div className={sender == msg.sender ? "send" : "receive"} key={index}>
+              <p className="msg-sender">{sender == msg.sender? "you" : `from: ${msg.sender}`}</p>
+              <p className="msg-message">{msg.message}</p>
               <p className="msg-date">{msg.date} {msg.time}</p>
             </div>
           ))}
