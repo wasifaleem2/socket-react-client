@@ -11,10 +11,11 @@
 }
 .chat-box {
   width: 300px;
-  min-height: 500px;
+  max-height: 500px;
   height: auto;
   text-align: center;
   background-color: floralwhite;
+  overflow: auto;
 }
 .chat-box input{
   width: 70%;
