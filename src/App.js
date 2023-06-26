@@ -108,21 +108,22 @@ function App() {
         <button type="button" onClick={send}>
           Send
         </button>
-
-        {messages.map((msg, index) => (
-          <div className={senderPhone == msg.senderNumber ? "send message_container" : "receive message_container"} key={index}>
-            <p className="msg-sender">{sender == msg.sender ? "you" : `from: ${msg.senderNumber}`}</p>
-            <p className="msg-message">{msg.text}</p>
-            <p className="msg-date">{msg.date} {msg.time}</p>
-          </div>
-        ))}
-        {chat.map((msg, index) => (
-          <div className={`message_container ${sender === msg.sender ? "send message_container" : "receive message_container"}`} key={index}>
-            <p className="msg-sender">{sender == msg.sender ? "you" : `from: ${msg.sender}`}</p>
-            <p className="msg-message">{msg.message}</p>
-            <p className="msg-date">{msg.date} {msg.time}</p>
-          </div>
-        ))}
+        <div className="messages">
+          {messages.map((msg, index) => (
+            <div className={senderPhone == msg.senderNumber ? "send message_container" : "receive message_container"} key={index}>
+              <p className="msg-sender">{sender == msg.sender ? "you" : `from: ${msg.senderNumber}`}</p>
+              <p className="msg-message">{msg.text}</p>
+              <p className="msg-date">{msg.date} {msg.time}</p>
+            </div>
+          ))}
+          {chat.map((msg, index) => (
+            <div className={`message_container ${sender === msg.sender ? "send message_container" : "receive message_container"}`} key={index}>
+              <p className="msg-sender">{sender == msg.sender ? "you" : `from: ${msg.sender}`}</p>
+              <p className="msg-message">{msg.message}</p>
+              <p className="msg-date">{msg.date} {msg.time}</p>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
