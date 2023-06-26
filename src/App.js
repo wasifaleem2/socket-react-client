@@ -14,7 +14,7 @@ function App() {
   const [recipient, setRecipient] = useState("");
   const [sender, setSender] = useState("")
 
-  let senderPhone = 333;
+  let senderPhone = 123;
   let URL = "http://localhost:3002/api/message/get"
   const getALLMessages = () => {
     axios.get(URL, {
@@ -61,6 +61,7 @@ function App() {
     // sending message to client through server
     socket.current.on("message", (msg) => {
       setChat((prevChat) => [...prevChat, msg]);
+      setTypingPlaceholder("type")
     });
   }, []);
 
