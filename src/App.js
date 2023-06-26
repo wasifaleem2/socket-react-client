@@ -33,8 +33,14 @@ function App() {
   }
   useEffect(() => {
     getALLMessages();
+    scrollToBottom();
   }, [])
 
+  const scrollableRef = useRef(null);
+  const scrollToBottom = () => {
+    const myDiv = scrollableRef.current;
+    myDiv.scrollTop = myDiv.scrollHeight;
+  };
 
   useEffect(() => {
     socket.current = io("http://localhost:5000");
@@ -108,7 +114,7 @@ function App() {
         <button type="button" onClick={send}>
           Send
         </button>
-        <div className="messages">
+        <div className="messages" ref={scrollableRef}>
           {messages.map((msg, index) => (
             <div className={senderPhone == msg.senderNumber ? "send message_container" : "receive message_container"} key={index}>
               <p className="msg-sender">{sender == msg.sender ? "you" : `from: ${msg.senderNumber}`}</p>
