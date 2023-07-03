@@ -13,34 +13,37 @@ function App() {
   const [usersList, setUserList] = useState([]);
   const [recipient, setRecipient] = useState("");
   const [sender, setSender] = useState("")
+  const [verification, setVerification] = useState(true)
+  const [senderPhone, setSenderPhone] = useState("")
 
-  let senderPhone = 333;
+  // let senderPhone = 333;
   let URL = "http://localhost:3002/api/message/get"
-  const getALLMessages = () => {
-    axios.get(URL, {
+  const getALLMessages = async (token) => {
+    await axios.get(URL, {
       headers: {
-        'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjU1NSIsInBhc3N3b3JkIjoiMTIzNDUiLCJpYXQiOjE2ODgzNzAwMjEsImV4cCI6MTY4ODQ1NjQyMX0.9xJorgRt27mWLzKkv1sDMOI6taqh2EUB2BdZ_G1gTNQ`,
+        'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
       }
     }).then((response) => {
       try {
         setMessages(response.data);
         console.log("api response", response.data)
+        setVerification(false);
       } catch (error) {
         console.log(error);
       }
     });
   }
   useEffect(() => {
-    getALLMessages();
-    scrollToBottom();
+    // getALLMessages();
+    // scrollToBottom();
   }, [])
 
-  const scrollableRef = useRef(null);
-  const scrollToBottom = () => {
-    const myDiv = scrollableRef.current;
-    myDiv.scrollTop = myDiv.scrollHeight;
-  };
+  // const scrollableRef = useRef(null);
+  // const scrollToBottom = () => {
+  //   const myDiv = scrollableRef.current;
+  //   myDiv.scrollTop = myDiv.scrollHeight;
+  // };
 
   useEffect(() => {
     socket.current = io("http://localhost:5000", {
@@ -104,8 +107,29 @@ function App() {
     socket.current.emit("typing", { time, recipient });
   };
 
+  function verify() {
+    axios.post('http://localhost:3002/api/verify', {
+      phone: senderPhone
+    })
+      .then((response) => {
+        try {
+          setMessages(response.data);
+          console.log("API response", response.data);
+          getALLMessages(response.data);
+        } catch (error) {
+          console.log(error);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+
+      
+  }
+
+
   return (
-    <div className="App">
+    !verification ? <div className="App">
       <div className="chat-box">
         <h3>Socket.io chat</h3>
         <label className="select-label">RECIPIENT </label>
@@ -118,7 +142,7 @@ function App() {
         <button type="button" onClick={send}>
           Send
         </button>
-        <div className="messages" ref={scrollableRef}>
+        <div className="messages">
           {messages.map((msg, index) => (
             <div className={senderPhone == msg.senderNumber ? "send message_container" : "receive message_container"} key={index}>
               <p className="msg-sender">{sender == msg.sender ? "you" : `from: ${msg.senderNumber}`}</p>
@@ -135,7 +159,12 @@ function App() {
           ))}
         </div>
       </div>
-    </div>
+    </div> :
+      <div className="chat-box">
+        <label>Enter Phone</label>
+        <input onChange={(e) => setSenderPhone(e.target.value)} />
+        <button onClick={() => { verify() }}>login</button>
+      </div>
   );
 }
 
