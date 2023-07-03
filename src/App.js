@@ -14,12 +14,12 @@ function App() {
   const [recipient, setRecipient] = useState("");
   const [sender, setSender] = useState("")
 
-  let senderPhone = 123;
+  let senderPhone = 333;
   let URL = "http://localhost:3002/api/message/get"
   const getALLMessages = () => {
     axios.get(URL, {
       headers: {
-        'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjU1NSIsInBhc3N3b3JkIjoiMTIzNDUiLCJpYXQiOjE2ODc3NjUzNTQsImV4cCI6MTY4Nzg1MTc1NH0.s0aIGvK9Y8RYXb9qdUgEQJaoY0CHQ__fDsyiB_j7c50`,
+        'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwaG9uZSI6IjU1NSIsInBhc3N3b3JkIjoiMTIzNDUiLCJpYXQiOjE2ODgzNzAwMjEsImV4cCI6MTY4ODQ1NjQyMX0.9xJorgRt27mWLzKkv1sDMOI6taqh2EUB2BdZ_G1gTNQ`,
         'Content-Type': 'application/json'
       }
     }).then((response) => {
@@ -43,7 +43,11 @@ function App() {
   };
 
   useEffect(() => {
-    socket.current = io("http://localhost:5000");
+    socket.current = io("http://localhost:5000", {
+      query: {
+        userPhone: senderPhone,
+      }
+    });
 
     // for socket connention with server
     socket.current.on("connection", () => {
