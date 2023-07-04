@@ -28,6 +28,9 @@ function MessageScreen() {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json'
+      },
+      data: {
+        phone: phoneNo,
       }
     }).then((response) => {
       try {
@@ -39,7 +42,7 @@ function MessageScreen() {
     });
   }
   useEffect(() => {
-    getALLMessages();
+    // getALLMessages();
     // scrollToBottom();
   }, [])
 
@@ -75,7 +78,7 @@ function MessageScreen() {
     })
 
 
-
+    getALLMessages(phoneNo);
     // sending message to client through server
     socket.current.on("receive-message", (msg) => {
       setChat((prevChat) => [...prevChat, msg]);
@@ -109,7 +112,7 @@ function MessageScreen() {
     let date = new Date().toLocaleDateString();
     let time = new Date().toLocaleTimeString();
     console.log(date, time);
-    socket.current.emit("message", { message, date, time, recipient, sender });
+    socket.current.emit("message", { message, date, time, recipient, sender, senderPhone });
     setMessage("")
   };
 
@@ -144,7 +147,7 @@ function MessageScreen() {
           ))}
           {chat.map((msg, index) => (
             <div className={`message_container ${sender === msg.sender ? "send message_container" : "receive message_container"}`} key={index}>
-              <p className="msg-sender">{sender == msg.sender ? "you" : `from: ${msg.sender}`}</p>
+              <p className="msg-sender">{senderPhone == msg.senderPhone ? "you" : `from: ${msg.senderPhone}`}</p>
               <p className="msg-message">{msg.message}</p>
               <p className="msg-date">{msg.date} {msg.time}</p>
             </div>
